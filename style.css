@@ -21,7 +21,7 @@ height:250px;
 width:1000px;
 background-color:white;
 margin-top:5px;
-background-image:url('../images/sofa.png');
+background-image:url('sofa.png');
 background-repeat:no-repeat;
 background-size:cover;
 }

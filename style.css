@@ -158,21 +158,21 @@ text-decoration:underline;
 #img1{
 height:200px;
 width:650px;
-background-image:url('../images/GIP.jpg');
+background-image:url('GIP.jpg');
 background-repeat:no-repeat;
 background-size:cover;
 }
 #img2{
 height:200px;
 width:650px;
-background-image:url('../images/GIP2.jpg');
+background-image:url('GIP2.jpg');
 background-repeat:no-repeat;
 background-size:cover;
 }
 #img3{
 height:200px;
 width:650px;
-background-image:url('../images/GIP3.jpg');
+background-image:url('GIP3.jpg');
 background-repeat:no-repeat;
 background-size:cover;
 margin-top: -10px;
@@ -180,7 +180,7 @@ margin-top: -10px;
 #img4{
 height:300px;
 width:650px;
-background-image:url('../images/GIP4.jpg');
+background-image:url('GIP4.jpg');
 background-repeat:no-repeat;
 background-size:cover;
 margin-top: -90px;

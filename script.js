@@ -4,11 +4,22 @@
    lightbox, clickable pagination, nav highlighting, a
    search box, scroll animations, a back-to-top button and
    simple login form validation.
+
+   HOW TO USE:
+   Add this one line just before the closing </body> tag of
+   every .html page you want it on:
+
+       <script src="script.js"></script>
+
+   Everything else (styles this script needs, like the
+   lightbox overlay or the fade-in animation) is injected
+   automatically below, so you don't have to touch style.css.
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
   injectHelperStyles();
   highlightActiveNavLink();
+  initDynamicBackground();
   initHeroSlider();
   initGalleryLightbox();
   initPagination();
@@ -139,10 +150,75 @@ function injectHelperStyles() {
       25% { transform: translateX(-6px); }
       75% { transform: translateX(6px); }
     }
+
+    /* Animated gradient replacing the flat green body background */
+    body {
+      background: linear-gradient(-45deg, #145214, #1f7a1f, #2e8b2e, #3cb371, #1f7a1f);
+      background-size: 400% 400%;
+      animation: gradientShift 18s ease infinite;
+    }
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Soft floating blobs that drift behind the page content */
+    .bg-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+    #outer {
+      position: relative;
+      z-index: 1;
+    }
+    @keyframes drift1 {
+      0%   { transform: translate(0, 0); }
+      50%  { transform: translate(120px, 80px); }
+      100% { transform: translate(0, 0); }
+    }
+    @keyframes drift2 {
+      0%   { transform: translate(0, 0); }
+      50%  { transform: translate(-100px, 100px); }
+      100% { transform: translate(0, 0); }
+    }
+    @keyframes drift3 {
+      0%   { transform: translate(0, 0); }
+      50%  { transform: translate(90px, -90px); }
+      100% { transform: translate(0, 0); }
+    }
   `;
   const styleTag = document.createElement("style");
   styleTag.textContent = css;
   document.head.appendChild(styleTag);
+}
+
+/* ---------------------------------------------------------
+   0b. Add a few large, blurred, softly-drifting circles
+       behind the content so the green background isn't flat
+   --------------------------------------------------------- */
+function initDynamicBackground() {
+  const blobs = [
+    { size: 400, top: "-10%", left: "5%", color: "#a8e6a1", anim: "drift1 22s ease-in-out infinite" },
+    { size: 300, top: "50%", left: "80%", color: "#6fcf6f", anim: "drift2 26s ease-in-out infinite" },
+    { size: 250, top: "80%", left: "10%", color: "#c8f2c0", anim: "drift3 20s ease-in-out infinite" }
+  ];
+
+  blobs.forEach(function (b) {
+    const blob = document.createElement("div");
+    blob.className = "bg-blob";
+    blob.style.width = b.size + "px";
+    blob.style.height = b.size + "px";
+    blob.style.top = b.top;
+    blob.style.left = b.left;
+    blob.style.backgroundColor = b.color;
+    blob.style.animation = b.anim;
+    document.body.appendChild(blob);
+  });
 }
 
 /* ---------------------------------------------------------
@@ -167,7 +243,7 @@ function initHeroSlider() {
   const slider = document.getElementById("slider");
   if (!slider) return;
 
-  const images = ["sofa.png", "GIP2.jpg", "GIP3.jpg"];
+  const images = ["sofa.png", "GIP.jpg", "GIP2.jpg", "GIP3.jpg", "GIP4.jpg", "GIP5.jpg"];
   let index = 0;
   let timer = setInterval(nextSlide, 4000);
 
@@ -180,6 +256,7 @@ function initHeroSlider() {
     }, 300);
   }
 
+  // Pause the rotation while the user is hovering over it
   slider.addEventListener("mouseenter", function () {
     clearInterval(timer);
   });
@@ -212,6 +289,7 @@ function initGalleryLightbox() {
     });
   });
 
+  // Let the Escape key close the lightbox too
   document.addEventListener("keydown", function (e) {
     const overlay = document.getElementById("lightbox-overlay");
     if (overlay && e.key === "Escape") overlay.remove();
@@ -243,9 +321,9 @@ function initPagination() {
 }
 
 /* ---------------------------------------------------------
-   5. Give the search box some real behaviour: pressing
-      Enter looks for and highlights matching text inside
-      the main article column (#left)
+   5. Give the search box some real behaviour:
+      pressing Enter looks for and highlights matching text
+      inside the main article column (#left)
    --------------------------------------------------------- */
 function initSearchBox() {
   const search = document.getElementById("search");
@@ -256,6 +334,7 @@ function initSearchBox() {
     if (e.key !== "Enter") return;
     e.preventDefault();
 
+    // Clear any previous highlights first
     container.querySelectorAll("mark.search-hit").forEach(function (mark) {
       const parent = mark.parentNode;
       parent.replaceChild(document.createTextNode(mark.textContent), mark);
@@ -278,6 +357,8 @@ function initSearchBox() {
   });
 }
 
+// Walks the text nodes of `element` and wraps the first case-insensitive
+// match of `term` in a <mark>. Returns the <mark> element, or null.
 function highlightTextInElement(element, term) {
   const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null);
   const lowerTerm = term.toLowerCase();

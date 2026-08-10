@@ -1,5 +1,3 @@
-
-
 document.addEventListener("DOMContentLoaded", function () {
   injectHelperStyles();
   highlightActiveNavLink();
@@ -14,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* ---------------------------------------------------------
-   0. Inject the small amount of CSS the features below need
+   0. Inject the small amount of CSS the features below need okkkk
    --------------------------------------------------------- */
 function injectHelperStyles() {
   const css = `

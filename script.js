@@ -227,7 +227,7 @@ function initHeroSlider() {
   const slider = document.getElementById("slider");
   if (!slider) return;
 
-  const images = ["sofa.png", "GIP.jpg", "GIP2.jpg", "GIP3.jpg", "GIP4.jpg", "GIP5.jpg"];
+  const images = ["sofa.png",  "GIP2.jpg", "GIP3.jpg"];
   let index = 0;
   let timer = setInterval(nextSlide, 4000);
 

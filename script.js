@@ -1,20 +1,4 @@
-/* =========================================================
-   script.js
-   Adds interactivity to the site: image slider, gallery
-   lightbox, clickable pagination, nav highlighting, a
-   search box, scroll animations, a back-to-top button and
-   simple login form validation.
 
-   HOW TO USE:
-   Add this one line just before the closing </body> tag of
-   every .html page you want it on:
-
-       <script src="script.js"></script>
-
-   Everything else (styles this script needs, like the
-   lightbox overlay or the fade-in animation) is injected
-   automatically below, so you don't have to touch style.css.
-   ========================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
   injectHelperStyles();
